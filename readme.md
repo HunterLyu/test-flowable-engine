@@ -6,10 +6,11 @@ Some demo code on how to use the event registry in flowable 6.8.0
 Prerequisites
 -------------
 - A Kafka installation on localhost using the default (insecure!) credentials.
-- A Mysql instance for BD connection
-- The tables will be create automatically when you boot the application.
+- A Mysql instance or others DB for process data storage,
+the tables will be created automatically when you boot the application.
 - JDK 17
-- To run it by springboot, remember to edit your run configuration settings in Intellij, choose the option "modify options", 
+- Modify the applciation.properties file to match your environment.
+- To run it by spring boot, remember to edit your run configuration settings in Intellij, choose the option "modify options", 
 then check the option of "add dependencies with 'provided' scope to classpath".
 
 
