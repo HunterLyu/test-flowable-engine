@@ -22,7 +22,7 @@ a instance id.
 - A simple dashboard: http://localhost/dashboard
 - To send a kafka msg: http://localhost/kafka/send?userId=xxx&topic=xxxx, 
 the topic is match to the channel destination field in your process definition. For the existing process, there are two 
-topic to drive the two process task moving on: task1FinishTopic and task2FinishTopic
+topic can drive two included tasks in existing process sample to moving on: task1FinishTopic and task2FinishTopic.
 
 
 
