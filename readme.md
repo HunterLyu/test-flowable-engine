@@ -29,7 +29,7 @@ topic can drive two included tasks in existing process sample to moving on: task
 To draw a process pipeline
 -------------
 - By flowable open source app-ui module, download the flowable code of release version 6.8.0,
-the repository is: https://github.com/flowable/flowable-engine.git, checkout the tag(important, not branch) of 6.0.8.
+the repository is: https://github.com/flowable/flowable-engine.git, checkout the tag(important, not branch) of 6.8.0.
 Locate the module flowable-app-ui, modify the applciation.properties file to set up your DB connnection, then run it 
 by spring boot, and access to: http://localhost:8080/flowable-ui, login as: admin/test.
 - By flowable enterprise, just access to cloud.flowable.com, and sign up a trail accout as 30 days free, then create a 
