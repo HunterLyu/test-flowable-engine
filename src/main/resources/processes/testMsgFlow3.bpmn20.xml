@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://flowable.org/test" exporter="Flowable Open Source Modeler">
+  <process id="testMsgFlow3" name="testMsgFlow3" isExecutable="true">
+    <documentation>testMsgFlow3</documentation>
+    <serviceTask id="task3Event" name="msg task 3" flowable:type="send-event" flowable:triggerable="true">
+      <extensionElements>
+        <flowable:eventType><![CDATA[task3SendEvent]]></flowable:eventType>
+        <flowable:triggerEventType><![CDATA[task3FinishEvent]]></flowable:triggerEventType>
+        <flowable:eventInParameter sourceExpression="${userId}" target="userId" targetType="string"></flowable:eventInParameter>
+        <flowable:eventOutParameter source="userId" sourceType="string" target="userId"></flowable:eventOutParameter>
+        <flowable:channelKey xmlns:flowable="http://flowable.org/bpmn"><![CDATA[task3SendChannel]]></flowable:channelKey>
+        <flowable:channelName xmlns:flowable="http://flowable.org/bpmn"><![CDATA[task3SendChannel]]></flowable:channelName>
+        <flowable:channelType xmlns:flowable="http://flowable.org/bpmn"><![CDATA[kafka]]></flowable:channelType>
+        <flowable:channelDestination xmlns:flowable="http://flowable.org/bpmn"><![CDATA[task3SendTopic]]></flowable:channelDestination>
+        <flowable:triggerEventName xmlns:flowable="http://flowable.org/bpmn"><![CDATA[task3FinishEvent]]></flowable:triggerEventName>
+        <flowable:triggerChannelKey xmlns:flowable="http://flowable.org/bpmn"><![CDATA[task3FinishChannel]]></flowable:triggerChannelKey>
+        <flowable:triggerChannelName xmlns:flowable="http://flowable.org/bpmn"><![CDATA[task3FinishChannel]]></flowable:triggerChannelName>
+        <flowable:triggerChannelType xmlns:flowable="http://flowable.org/bpmn"><![CDATA[kafka]]></flowable:triggerChannelType>
+        <flowable:triggerChannelDestination xmlns:flowable="http://flowable.org/bpmn"><![CDATA[task3FinishTopic]]></flowable:triggerChannelDestination>
+        <flowable:triggerEventCorrelationParameter xmlns:flowable="http://flowable.org/bpmn" name="userId" type="string" value="${userId}"></flowable:triggerEventCorrelationParameter>
+        <flowable:keyDetectionType xmlns:flowable="http://flowable.org/bpmn"><![CDATA[fixedValue]]></flowable:keyDetectionType>
+        <flowable:keyDetectionValue xmlns:flowable="http://flowable.org/bpmn"><![CDATA[task3FinishEvent]]></flowable:keyDetectionValue>
+      </extensionElements>
+    </serviceTask>
+    <startEvent id="startnoneevent1" flowable:initiator="initiator" flowable:formFieldValidation="false"></startEvent>
+    <endEvent id="endNoneEvent3"></endEvent>
+    <sequenceFlow id="sequenceFlow1" sourceRef="startnoneevent1" targetRef="task3Event"></sequenceFlow>
+    <sequenceFlow id="sequenceFlow7" name="sequenceFlow7" sourceRef="task3Event" targetRef="endNoneEvent3"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_testMsgFlow3">
+    <bpmndi:BPMNPlane bpmnElement="testMsgFlow3" id="BPMNPlane_testMsgFlow3">
+      <bpmndi:BPMNShape bpmnElement="task3Event" id="BPMNShape_task3Event">
+        <omgdc:Bounds height="80.0" width="100.0" x="239.9999898274749" y="347.99999262491923"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startnoneevent1" id="BPMNShape_startnoneevent1">
+        <omgdc:Bounds height="30.0" width="30.0" x="120.0" y="373.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endNoneEvent3" id="BPMNShape_endNoneEvent3">
+        <omgdc:Bounds height="28.0" width="28.0" x="591.0" y="374.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow1" id="BPMNEdge_sequenceFlow1" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="149.9499992394987" y="387.99999928628245"></omgdi:waypoint>
+        <omgdi:waypoint x="239.99998982745672" y="387.9999950015986"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow7" id="BPMNEdge_sequenceFlow7" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="339.949989827297" y="387.9999937943963"></omgdi:waypoint>
+        <omgdi:waypoint x="590.9999990623154" y="387.9999996722186"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

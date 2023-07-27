@@ -1,0 +1,1 @@
+{"payload":[{"name":"userId","correlationParameter":true,"header":false,"isFullPayload":false,"metaParameter":false,"type":"string"}],"name":"task2FinishEvent","key":"task2FinishEvent"}

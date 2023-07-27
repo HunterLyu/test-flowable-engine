@@ -1,0 +1,14 @@
+{
+  "payload": [
+    {
+      "name": "userId",
+      "correlationParameter": false,
+      "header": false,
+      "isFullPayload": false,
+      "metaParameter": false,
+      "type": "string"
+    }
+  ],
+  "name": "task1SendEvent",
+  "key": "task1SendEvent"
+}

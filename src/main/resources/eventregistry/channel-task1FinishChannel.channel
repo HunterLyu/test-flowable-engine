@@ -1,0 +1,11 @@
+{
+	"channelType": "inbound",
+	"type": "kafka",
+	"topics": ["task1FinishTopic"],
+	"deserializerType": "json",
+	"channelEventKeyDetection": {
+		"fixedValue": "task1FinishEvent"
+	},
+	"name": "task1FinishChannel",
+	"key": "task1FinishChannel"
+}
