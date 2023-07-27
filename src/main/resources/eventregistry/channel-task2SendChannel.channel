@@ -1,8 +1,0 @@
-{
-	"channelType": "outbound",
-	"type": "kafka",
-	"topic": "task2SendTopic",
-	"serializerType": "json",
-	"name": "task2SendChannel",
-	"key": "task2SendChannel"
-}
