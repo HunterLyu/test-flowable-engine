@@ -118,11 +118,11 @@
 <!--			<version>${flowable.version}</version>-->
 <!--		</dependency>-->
 
-<!--		<dependency>-->
-<!--			<groupId>org.flowable</groupId>-->
-<!--			<artifactId>flowable-spring-boot-starter-rest</artifactId>-->
-<!--			<version>${flowable.version}</version>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.flowable</groupId>
+			<artifactId>flowable-spring-boot-starter-rest</artifactId>
+			<version>${flowable.version}</version>
+		</dependency>
 
 <!--		<dependency>-->
 <!--			<groupId>org.flowable</groupId>-->
@@ -141,17 +141,6 @@
 			<version>${flowable.version}</version>
 		</dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>org.flowable</groupId>-->
-<!--            <artifactId>flowable-ui-modeler-logic</artifactId>-->
-<!--            <version>6.8.0</version>-->
-<!--        </dependency>-->
-
-<!--		<dependency>-->
-<!--			<groupId>org.flowable</groupId>-->
-<!--			<artifactId>flowable-ui-common</artifactId>-->
-<!--			<version>6.8.0</version>-->
-<!--		</dependency>-->
 		<dependency>
 			<groupId>org.flowable</groupId>
 			<artifactId>flowable-spring-boot-starter-ui-modeler</artifactId>
