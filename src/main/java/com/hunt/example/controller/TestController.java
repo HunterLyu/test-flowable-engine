@@ -2,9 +2,8 @@ package com.hunt.example.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hunt.example.config.MessageConfig;
 import com.hunt.example.service.TestMsgFlowService;
-import org.flowable.bpmn.model.BpmnModel;
+import jakarta.servlet.http.HttpServletResponse;
 import org.flowable.cmmn.api.CmmnHistoryService;
 import org.flowable.cmmn.api.CmmnRuntimeService;
 import org.flowable.cmmn.api.CmmnTaskService;
@@ -13,8 +12,6 @@ import org.flowable.engine.RuntimeService;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ProcessInstance;
-import org.flowable.ui.modeler.domain.Model;
-import org.flowable.ui.modeler.serviceapi.ModelService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,14 +19,15 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.JacksonUtils;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.util.concurrent.ListenableFutureCallback;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 @Controller
 @RequestMapping(path = "/")
@@ -53,8 +51,6 @@ public class TestController {
     @Autowired
     private RepositoryService repositoryService;
 
-    @Autowired
-    private ModelService modelService;
 
     @Autowired
     private KafkaTemplate<String, Object> kafkaTemplate;
@@ -62,6 +58,12 @@ public class TestController {
     protected Logger log = LoggerFactory.getLogger(getClass());
 
     public TestController() {
+    }
+
+    @GetMapping(value = "/hello")
+    @ResponseBody
+    public String startMsgFlow() {
+        return "hello";
     }
 
     @GetMapping(value = "/startMsgFlow")
@@ -122,60 +124,72 @@ public class TestController {
     }
 
 
-//    // 发送消息
-//    @GetMapping("/kafka/send")
-//    public void sendMessage1() {
-//        CompletableFuture<SendResult<String, Object>> normalMessage = kafkaTemplate.send(MessageConfig.TEST_FLOWABLE, "normalMessage");
-//
-//        kafkaTemplate.executeInTransaction(operations -> {
-//            CompletableFuture<Void> normalMessage1 = operations
-//                    .send(MessageConfig.TEST_FLOWABLE, "normalMessage")
-//                    .thenAccept(this::onSuccess)
-//                    .exceptionally(this::onFailure);
-//            return true;
-//        });
-//    }
-
-
     // 发送消息
     @GetMapping("/kafka/send")
     @ResponseBody
     public String sendMessage1(@RequestParam(value = "userId", required = false, defaultValue = "1") String userId
-            , @RequestParam(value = "topic") String topic) throws Exception {
+            , @RequestParam(value = "topic") String topic) throws JsonProcessingException, ExecutionException, InterruptedException {
         Map<String, Object> param = new HashMap<>();
         param.put("userId", userId);
-
         String kafkaMsg = OBJECT_MAPPER.writeValueAsString(param);
 
-        ListenableFuture<SendResult<String, Object>> send = kafkaTemplate.send(topic, kafkaMsg);
-        send.addCallback(new ListenableFutureCallback<SendResult<String,
-                Object>>() {
-            @Override
-            public void onSuccess(SendResult<String, Object> result) {
-                log.info("发送消息成功：" + result.getRecordMetadata().topic() + "-"
-                        + result.getRecordMetadata().partition() + "-" + result.getRecordMetadata().offset());
-            }
+        CompletableFuture<Void> result = kafkaTemplate.send(topic, kafkaMsg)
+                .thenAccept(this::onSuccess)
+                .exceptionally(this::onFailure);
 
-            @Override
-            public void onFailure(Throwable ex) {
-                log.error("发送消息失败.", ex);
-            }
-        });
+//        CompletableFuture<SendResult<String, Object>> future = kafkaTemplate.executeInTransaction(operations -> {
+//            CompletableFuture<SendResult<String, Object>> result = operations
+//                    .send(topic, kafkaMsg)
+//                    .thenApply(this::onSuccess)
+//                    .exceptionally(this::onFailure);
+//            return result;
+//        });
 
-        return send.get().toString();
+        return result.toString();
     }
 
 
-//    public Void onFailure(Throwable ex) {
-//        System.out.println("发送消息失败：" + ex.getMessage());
+    // 发送消息
+//    @GetMapping("/kafka/send")
+//    @ResponseBody
+//    public String sendMessage1(@RequestParam(value = "userId", required = false, defaultValue = "1") String userId
+//            , @RequestParam(value = "topic") String topic) throws Exception {
+//        Map<String, Object> param = new HashMap<>();
+//        param.put("userId", userId);
 //
-//        return null;
-//    }
+//        String kafkaMsg = OBJECT_MAPPER.writeValueAsString(param);
 //
-//    public void onSuccess(SendResult<String, Object> result) {
-//        System.out.println("发送消息成功：" + result.getRecordMetadata().topic() + "-"
-//                + result.getRecordMetadata().partition() + "-" + result.getRecordMetadata().offset());
+//        ListenableFuture<SendResult<String, Object>> send = kafkaTemplate.send(topic, kafkaMsg);
+//        send.addCallback(new ListenableFutureCallback<SendResult<String,
+//                Object>>() {
+//            @Override
+//            public void onSuccess(SendResult<String, Object> result) {
+//                log.info("发送消息成功：" + result.getRecordMetadata().topic() + "-"
+//                        + result.getRecordMetadata().partition() + "-" + result.getRecordMetadata().offset());
+//            }
+//
+//            @Override
+//            public void onFailure(Throwable ex) {
+//                log.error("发送消息失败.", ex);
+//            }
+//        });
+//
+//        return send.get().toString();
 //    }
+
+
+    public Void onFailure(Throwable ex) {
+        System.out.println("发送消息失败：" + ex.getMessage());
+
+        return null;
+    }
+
+    public SendResult<String, Object> onSuccess(SendResult<String, Object> result) {
+        System.out.println("发送消息成功：" + result.getRecordMetadata().topic() + "-"
+                + result.getRecordMetadata().partition() + "-" + result.getRecordMetadata().offset());
+
+        return result;
+    }
 
     public static class DashboardData {
 
