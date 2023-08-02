@@ -33,6 +33,8 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping(path = "/")
 public class TestController {
 
+    protected Logger log = LoggerFactory.getLogger(getClass());
+
     public static final ObjectMapper OBJECT_MAPPER = JacksonUtils.enhancedObjectMapper();
     @Autowired
     private CmmnRuntimeService cmmnRuntimeService;
@@ -54,8 +56,6 @@ public class TestController {
 
     @Autowired
     private KafkaTemplate<String, Object> kafkaTemplate;
-
-    protected Logger log = LoggerFactory.getLogger(getClass());
 
     public TestController() {
     }
@@ -177,13 +177,13 @@ public class TestController {
 
 
     public Void onFailure(Throwable ex) {
-        System.out.println("发送消息失败：" + ex.getMessage());
+        log.error("send kafka message failed：" + ex.getMessage());
 
         return null;
     }
 
     public SendResult<String, Object> onSuccess(SendResult<String, Object> result) {
-        System.out.println("发送消息成功：" + result.getRecordMetadata().topic() + "-"
+        log.info("send kafka message success：" + result.getRecordMetadata().topic() + "-"
                 + result.getRecordMetadata().partition() + "-" + result.getRecordMetadata().offset());
 
         return result;
