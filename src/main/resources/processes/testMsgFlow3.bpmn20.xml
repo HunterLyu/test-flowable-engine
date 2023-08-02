@@ -1,50 +1,106 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://flowable.org/test" exporter="Flowable Open Source Modeler">
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://flowable.org/test" exporter="Flowable Open Source Modeler" exporterVersion="6.8.0">
   <process id="testMsgFlow3" name="testMsgFlow3" isExecutable="true">
     <documentation>testMsgFlow3</documentation>
-    <serviceTask id="task3Event" name="msg task 3" flowable:type="send-event" flowable:triggerable="true">
+    <serviceTask id="flow3SendEventTask1" name="Flow 3 message task 1" flowable:type="send-event" flowable:triggerable="true">
       <extensionElements>
-        <flowable:eventType><![CDATA[task3SendEvent]]></flowable:eventType>
-        <flowable:triggerEventType><![CDATA[task3FinishEvent]]></flowable:triggerEventType>
+        <flowable:eventType><![CDATA[flow3SendEvent1]]></flowable:eventType>
+        <flowable:triggerEventType><![CDATA[flow3FinishEvent1]]></flowable:triggerEventType>
         <flowable:eventInParameter sourceExpression="${userId}" target="userId" targetType="string"></flowable:eventInParameter>
         <flowable:eventOutParameter source="userId" sourceType="string" target="userId"></flowable:eventOutParameter>
-        <flowable:channelKey xmlns:flowable="http://flowable.org/bpmn"><![CDATA[task3SendChannel]]></flowable:channelKey>
-        <flowable:channelName xmlns:flowable="http://flowable.org/bpmn"><![CDATA[task3SendChannel]]></flowable:channelName>
+        <flowable:channelKey xmlns:flowable="http://flowable.org/bpmn"><![CDATA[flow3SendChannel1]]></flowable:channelKey>
+        <flowable:channelName xmlns:flowable="http://flowable.org/bpmn"><![CDATA[flow3SendChannel1]]></flowable:channelName>
         <flowable:channelType xmlns:flowable="http://flowable.org/bpmn"><![CDATA[kafka]]></flowable:channelType>
-        <flowable:channelDestination xmlns:flowable="http://flowable.org/bpmn"><![CDATA[task3SendTopic]]></flowable:channelDestination>
-        <flowable:triggerEventName xmlns:flowable="http://flowable.org/bpmn"><![CDATA[task3FinishEvent]]></flowable:triggerEventName>
-        <flowable:triggerChannelKey xmlns:flowable="http://flowable.org/bpmn"><![CDATA[task3FinishChannel]]></flowable:triggerChannelKey>
-        <flowable:triggerChannelName xmlns:flowable="http://flowable.org/bpmn"><![CDATA[task3FinishChannel]]></flowable:triggerChannelName>
+        <flowable:channelDestination xmlns:flowable="http://flowable.org/bpmn"><![CDATA[flow3SendTopic1]]></flowable:channelDestination>
+        <flowable:triggerEventName xmlns:flowable="http://flowable.org/bpmn"><![CDATA[flow3FinishEvent1]]></flowable:triggerEventName>
+        <flowable:triggerChannelKey xmlns:flowable="http://flowable.org/bpmn"><![CDATA[flow3FinishChannel1]]></flowable:triggerChannelKey>
+        <flowable:triggerChannelName xmlns:flowable="http://flowable.org/bpmn"><![CDATA[flow3FinishChannel1]]></flowable:triggerChannelName>
         <flowable:triggerChannelType xmlns:flowable="http://flowable.org/bpmn"><![CDATA[kafka]]></flowable:triggerChannelType>
-        <flowable:triggerChannelDestination xmlns:flowable="http://flowable.org/bpmn"><![CDATA[task3FinishTopic]]></flowable:triggerChannelDestination>
+        <flowable:triggerChannelDestination xmlns:flowable="http://flowable.org/bpmn"><![CDATA[flow3FinishTopic1]]></flowable:triggerChannelDestination>
         <flowable:triggerEventCorrelationParameter xmlns:flowable="http://flowable.org/bpmn" name="userId" type="string" value="${userId}"></flowable:triggerEventCorrelationParameter>
         <flowable:keyDetectionType xmlns:flowable="http://flowable.org/bpmn"><![CDATA[fixedValue]]></flowable:keyDetectionType>
-        <flowable:keyDetectionValue xmlns:flowable="http://flowable.org/bpmn"><![CDATA[task3FinishEvent]]></flowable:keyDetectionValue>
+        <flowable:keyDetectionValue xmlns:flowable="http://flowable.org/bpmn"><![CDATA[flow3FinishEvent1]]></flowable:keyDetectionValue>
       </extensionElements>
     </serviceTask>
     <startEvent id="startnoneevent1" flowable:initiator="initiator" flowable:formFieldValidation="false"></startEvent>
     <endEvent id="endNoneEvent3"></endEvent>
-    <sequenceFlow id="sequenceFlow1" sourceRef="startnoneevent1" targetRef="task3Event"></sequenceFlow>
-    <sequenceFlow id="sequenceFlow7" name="sequenceFlow7" sourceRef="task3Event" targetRef="endNoneEvent3"></sequenceFlow>
+    <sequenceFlow id="sequenceFlow1" sourceRef="startnoneevent1" targetRef="flow3SendEventTask1"></sequenceFlow>
+    <serviceTask id="flow3HttpCallTask1" name="flow3HttpCallTask1" flowable:parallelInSameTransaction="true" flowable:type="http">
+      <extensionElements>
+        <flowable:field name="requestMethod">
+          <flowable:string><![CDATA[GET]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestUrl">
+          <flowable:expression><![CDATA[http://localhost:8081/api/customers?userId=${userId}&instanceId=${execution.getProcessInstanceId()}]]></flowable:expression>
+        </flowable:field>
+        <flowable:field name="requestHeaders">
+          <flowable:string><![CDATA[Content-Type: application/json]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="requestTimeout">
+          <flowable:string><![CDATA[1000]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="failStatusCodes">
+          <flowable:string><![CDATA[400, 404, 500, 503]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="responseVariableName">
+          <flowable:string><![CDATA[flow3CallTask1Response]]></flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseVariableAsJson">
+          <flowable:string><![CDATA[true]]></flowable:string>
+        </flowable:field>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sequenceFlow7" name="sequenceFlow7" sourceRef="flow3SendEventTask1" targetRef="flow3HttpCallTask1"></sequenceFlow>
+    <serviceTask id="flow3SendEventTask2" name="flow3SendEventTask2" flowable:type="send-event">
+      <extensionElements>
+        <flowable:eventType><![CDATA[flow3SendEvent2]]></flowable:eventType>
+        <flowable:eventInParameter sourceExpression="${flow3CallTask1Response[0].name}" target="flow3CallTask1ResponseEmployeeName" targetType="string"></flowable:eventInParameter>
+        <flowable:eventName xmlns:flowable="http://flowable.org/bpmn"><![CDATA[flow3SendEvent2]]></flowable:eventName>
+        <flowable:channelKey xmlns:flowable="http://flowable.org/bpmn"><![CDATA[flow3SendChannel2]]></flowable:channelKey>
+        <flowable:channelName xmlns:flowable="http://flowable.org/bpmn"><![CDATA[flow3SendChannel2]]></flowable:channelName>
+        <flowable:channelType xmlns:flowable="http://flowable.org/bpmn"><![CDATA[kafka]]></flowable:channelType>
+        <flowable:channelDestination xmlns:flowable="http://flowable.org/bpmn"><![CDATA[flow3SendTopic2]]></flowable:channelDestination>
+      </extensionElements>
+    </serviceTask>
+    <sequenceFlow id="sid-C64F3903-14D8-47A9-8488-1B3863D298C5" sourceRef="flow3HttpCallTask1" targetRef="flow3SendEventTask2"></sequenceFlow>
+    <sequenceFlow id="sid-03F70F54-391B-405D-B6D9-3C46CC6CCD02" sourceRef="flow3SendEventTask2" targetRef="endNoneEvent3"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_testMsgFlow3">
     <bpmndi:BPMNPlane bpmnElement="testMsgFlow3" id="BPMNPlane_testMsgFlow3">
-      <bpmndi:BPMNShape bpmnElement="task3Event" id="BPMNShape_task3Event">
-        <omgdc:Bounds height="80.0" width="100.0" x="239.9999898274749" y="347.99999262491923"></omgdc:Bounds>
+      <bpmndi:BPMNShape bpmnElement="flow3SendEventTask1" id="BPMNShape_flow3SendEventTask1">
+        <omgdc:Bounds height="80.0" width="100.0" x="225.0" y="345.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="startnoneevent1" id="BPMNShape_startnoneevent1">
-        <omgdc:Bounds height="30.0" width="30.0" x="120.0" y="373.0"></omgdc:Bounds>
+        <omgdc:Bounds height="30.0" width="30.0" x="120.0" y="370.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape bpmnElement="endNoneEvent3" id="BPMNShape_endNoneEvent3">
-        <omgdc:Bounds height="28.0" width="28.0" x="591.0" y="374.0"></omgdc:Bounds>
+        <omgdc:Bounds height="28.0" width="28.0" x="840.0" y="374.0"></omgdc:Bounds>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNEdge bpmnElement="sequenceFlow1" id="BPMNEdge_sequenceFlow1" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
-        <omgdi:waypoint x="149.9499992394987" y="387.99999928628245"></omgdi:waypoint>
-        <omgdi:waypoint x="239.99998982745672" y="387.9999950015986"></omgdi:waypoint>
+      <bpmndi:BPMNShape bpmnElement="flow3HttpCallTask1" id="BPMNShape_flow3HttpCallTask1">
+        <omgdc:Bounds height="80.0" width="100.0" x="390.0" y="225.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="flow3SendEventTask2" id="BPMNShape_flow3SendEventTask2">
+        <omgdc:Bounds height="80.0" width="100.0" x="555.0" y="348.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-C64F3903-14D8-47A9-8488-1B3863D298C5" id="BPMNEdge_sid-C64F3903-14D8-47A9-8488-1B3863D298C5" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="53.0" flowable:targetDockerY="16.5">
+        <omgdi:waypoint x="489.95000000000005" y="265.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.5" y="265.0"></omgdi:waypoint>
+        <omgdi:waypoint x="522.5" y="364.5"></omgdi:waypoint>
+        <omgdi:waypoint x="555.0" y="364.5"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge bpmnElement="sequenceFlow7" id="BPMNEdge_sequenceFlow7" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
-        <omgdi:waypoint x="339.949989827297" y="387.9999937943963"></omgdi:waypoint>
-        <omgdi:waypoint x="590.9999990623154" y="387.9999996722186"></omgdi:waypoint>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow1" id="BPMNEdge_sequenceFlow1" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="50.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="149.9499990675947" y="385.0"></omgdi:waypoint>
+        <omgdi:waypoint x="225.0" y="385.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-03F70F54-391B-405D-B6D9-3C46CC6CCD02" id="BPMNEdge_sid-03F70F54-391B-405D-B6D9-3C46CC6CCD02" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="654.9499999999877" y="388.0"></omgdi:waypoint>
+        <omgdi:waypoint x="840.0" y="388.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow7" id="BPMNEdge_sequenceFlow7" flowable:sourceDockerX="50.0" flowable:sourceDockerY="40.0" flowable:targetDockerX="1.0" flowable:targetDockerY="40.0">
+        <omgdi:waypoint x="324.9499999999542" y="385.0"></omgdi:waypoint>
+        <omgdi:waypoint x="357.5" y="385.0"></omgdi:waypoint>
+        <omgdi:waypoint x="357.5" y="265.0"></omgdi:waypoint>
+        <omgdi:waypoint x="389.99999999997243" y="265.0"></omgdi:waypoint>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
