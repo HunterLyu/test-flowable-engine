@@ -1,0 +1,18 @@
+{
+  "correlationParameters": [],
+  "payload": [
+    {
+      "name": "userId",
+      "type": "string"
+    },
+    {
+      "name": "applyDays",
+      "type": "integer"
+    }
+  ],
+  "name": "bossMsgBoxEvent",
+  "key": "bossMsgBoxEvent",
+  "outboundChannelKeys": [
+    "bossMsgBoxOutboundChannel"
+  ]
+}

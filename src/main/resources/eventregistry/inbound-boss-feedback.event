@@ -1,0 +1,28 @@
+{
+  "correlationParameters": [
+    {
+      "name": "userId",
+      "type": "string"
+    },
+    {
+      "name": "applyDays",
+      "type": "integer"
+    }
+  ],
+  "payload": [
+    {
+      "name": "userId",
+      "type": "string"
+    },
+    {
+      "name": "applyDays",
+      "type": "integer"
+    },
+    {
+      "name": "status",
+      "type": "string"
+    }
+  ],
+  "name": "boss feedback event",
+  "key": "bossFeedbackEvent"
+}

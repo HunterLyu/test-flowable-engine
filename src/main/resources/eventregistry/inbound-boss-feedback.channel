@@ -1,0 +1,13 @@
+{
+  "type": "kafka",
+  "channelType": "inbound",
+  "deserializerType": "json",
+  "topics": [
+    "boss-msg-feedback"
+  ],
+  "channelEventKeyDetection": {
+    "fixedValue": "bossFeedbackEvent"
+  },
+  "name": "Boss feedback Channel",
+  "key": "bossFeedbackChannel"
+}

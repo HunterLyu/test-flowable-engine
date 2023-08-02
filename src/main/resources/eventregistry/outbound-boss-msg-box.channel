@@ -1,0 +1,8 @@
+{
+  "type": "kafka",
+  "channelType": "outbound",
+  "serializerType": "json",
+  "topic": "boss-msg-box",
+  "name": "boss msg box Outbound Channel",
+  "key": "bossMsgBoxOutboundChannel"
+}

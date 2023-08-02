@@ -9,9 +9,11 @@ import org.flowable.cmmn.api.CmmnRuntimeService;
 import org.flowable.cmmn.api.CmmnTaskService;
 import org.flowable.engine.RepositoryService;
 import org.flowable.engine.RuntimeService;
+import org.flowable.engine.TaskService;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.task.api.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +21,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.JacksonUtils;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,11 +52,24 @@ public class TestController {
     @Autowired
     private RepositoryService repositoryService;
 
-
+    @Autowired
+    private TaskService taskService;
     @Autowired
     private KafkaTemplate<String, Object> kafkaTemplate;
 
     public TestController() {
+    }
+
+    @PostMapping("/process/complete-task")
+    public String completeTask2(@RequestParam String processId, @RequestParam String taskKey, @RequestBody Map<String, Object> params){
+        ProcessInstance processInstance = runtimeService.createProcessInstanceQuery().processInstanceId(processId).singleResult();
+
+        Task task = this.taskService.createTaskQuery()
+                .processInstanceId(processInstance.getProcessInstanceId())
+                .taskDefinitionKey(taskKey)
+                .singleResult();
+        this.taskService.complete(task.getId(), params);
+        return "OK";
     }
 
     @GetMapping(value = "/hello")

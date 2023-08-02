@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef" exporter="Flowable Open Source Modeler" exporterVersion="6.8.0">
+  <process id="holiday-request" name="holiday request" isExecutable="true">
+    <startEvent id="startEvent" flowable:formFieldValidation="true"></startEvent>
+    <userTask id="userTaskEmployInput" name="employment apply holiday" flowable:formFieldValidation="true"></userTask>
+    <serviceTask id="checHolidayRemaining" name="check holiday remaining" flowable:type="http">
+      <extensionElements>
+        <flowable:field name="requestMethod" stringValue="GET"/>
+        <flowable:field name="requestUrl" expression="http://localhost:8081/api/check-holiday-quota?userId=${userId}&amp;applyDays=${applyDays}"/>
+        <flowable:field name="resultVariablePrefix">
+          <flowable:string>holidayRemaining</flowable:string>
+        </flowable:field>
+        <flowable:field name="saveResponseVariableAsJson" stringValue="true"/>
+      </extensionElements>
+    </serviceTask>
+
+
+    <serviceTask id="exactHttpResponxe" name="exact holiday remaining response" flowable:class="com.hunt.example.servicetask.ExactResponseToVar" />
+    <exclusiveGateway id="checkCanGoOn"></exclusiveGateway>
+    <serviceTask id="sendAndWaitForMsg" name="Send request for holiday request and wait for result" flowable:type="send-event" flowable:triggerable="true">
+      <extensionElements>
+        <flowable:eventType><![CDATA[bossMsgBoxEvent]]></flowable:eventType>
+        <flowable:triggerEventType><![CDATA[bossFeedbackEvent]]></flowable:triggerEventType>
+        <flowable:channelKey><![CDATA[bossMsgBoxOutboundChannel]]></flowable:channelKey>
+        <flowable:eventInParameter source="${userId}" target="userId"></flowable:eventInParameter>
+        <flowable:eventInParameter source="${applyDays}" target="applyDays"></flowable:eventInParameter>
+        <flowable:triggerEventCorrelationParameter name="userId" value="${userId}"></flowable:triggerEventCorrelationParameter>
+        <flowable:triggerEventCorrelationParameter name="applyDays" value="${applyDays}"></flowable:triggerEventCorrelationParameter>
+        <flowable:eventOutParameter source="userId" target="userId"></flowable:eventOutParameter>
+        <flowable:eventOutParameter source="applyDays" target="applyDays"></flowable:eventOutParameter>
+        <flowable:eventOutParameter source="status" target="status"></flowable:eventOutParameter>
+      </extensionElements>
+    </serviceTask>
+    <exclusiveGateway id="isRequestAgree"></exclusiveGateway>
+    <endEvent id="endEventApprove" name="approve holiday request"></endEvent>
+    <endEvent id="endEventReject" name="reject holiday request"></endEvent>
+
+    
+    <sequenceFlow id="sid-C261C98F-6FB8-479E-89F9-0E40E0DC33ED" sourceRef="sendAndWaitForMsg" targetRef="isRequestAgree"></sequenceFlow>
+    <sequenceFlow id="sid-0482FEDA-B797-457E-8F75-D3C780823085" sourceRef="exactHttpResponxe" targetRef="checkCanGoOn"></sequenceFlow>
+    <sequenceFlow id="sid-A46177AE-8DF0-402A-A1F2-A92DC2C87496" sourceRef="checHolidayRemaining" targetRef="exactHttpResponxe"></sequenceFlow>
+
+    <sequenceFlow id="sid-88D35444-BE2F-4D29-8DE8-17E04871E1C8" sourceRef="startEvent" targetRef="userTaskEmployInput"></sequenceFlow>
+    <sequenceFlow id="sid-7D0DE7A4-4903-416E-975C-D63F64913A8C" sourceRef="userTaskEmployInput" targetRef="checHolidayRemaining"></sequenceFlow>
+    <sequenceFlow id="branchHasEnoughHoliday" name="has enough holiday" sourceRef="checkCanGoOn" targetRef="sendAndWaitForMsg">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${holidayRemainingStatus == 'Yes'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="branchNotHasEnoughHoliday" name="not have enough holiday" sourceRef="checkCanGoOn" targetRef="endEventReject">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${holidayRemainingStatus == 'No'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="branchRequestApproved" name="request approved" sourceRef="isRequestAgree" targetRef="endEventApprove">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'Yes'}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="branchRequestReject" name="request regject" sourceRef="isRequestAgree" targetRef="endEventReject">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${status == 'No'}]]></conditionExpression>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_holiday-request3">
+    <bpmndi:BPMNPlane bpmnElement="holiday-request3" id="BPMNPlane_holiday-request3">
+      <bpmndi:BPMNShape bpmnElement="startEvent" id="BPMNShape_startEvent">
+        <omgdc:Bounds height="30.0" width="30.0" x="0.0" y="61.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="userTaskEmployInput" id="BPMNShape_userTaskEmployInput">
+        <omgdc:Bounds height="60.0" width="100.0" x="80.0" y="46.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="checHolidayRemaining" id="BPMNShape_checHolidayRemaining">
+        <omgdc:Bounds height="60.0" width="100.0" x="230.0" y="45.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="exactHttpResponxe" id="BPMNShape_exactHttpResponxe">
+        <omgdc:Bounds height="60.0" width="100.0" x="380.0" y="42.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="checkCanGoOn" id="BPMNShape_checkCanGoOn">
+        <omgdc:Bounds height="40.0" width="40.0" x="530.0" y="48.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="sendAndWaitForMsg" id="BPMNShape_sendAndWaitForMsg">
+        <omgdc:Bounds height="60.0" width="100.0" x="620.0" y="100.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="isRequestAgree" id="BPMNShape_isRequestAgree">
+        <omgdc:Bounds height="40.0" width="40.0" x="770.0" y="107.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endEventApprove" id="BPMNShape_endEventApprove">
+        <omgdc:Bounds height="28.0" width="28.0" x="860.0" y="130.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="endEventReject" id="BPMNShape_endEventReject">
+        <omgdc:Bounds height="28.0" width="28.0" x="860.0" y="0.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sid-7D0DE7A4-4903-416E-975C-D63F64913A8C" id="BPMNEdge_sid-7D0DE7A4-4903-416E-975C-D63F64913A8C" flowable:sourceDockerX="50.0" flowable:sourceDockerY="30.0" flowable:targetDockerX="50.0" flowable:targetDockerY="30.0">
+        <omgdi:waypoint x="179.95" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="192.0" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="192.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="229.99999999998772" y="75.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="branchRequestReject" id="BPMNEdge_branchRequestReject" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="809.9189252336448" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="822.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="822.0" y="15.0"></omgdi:waypoint>
+        <omgdi:waypoint x="860.0025321198764" y="14.268220825690175"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-0482FEDA-B797-457E-8F75-D3C780823085" id="BPMNEdge_sid-0482FEDA-B797-457E-8F75-D3C780823085" flowable:sourceDockerX="50.0" flowable:sourceDockerY="30.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+        <omgdi:waypoint x="479.949999999998" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="492.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="492.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="530.0" y="68.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-A46177AE-8DF0-402A-A1F2-A92DC2C87496" id="BPMNEdge_sid-A46177AE-8DF0-402A-A1F2-A92DC2C87496" flowable:sourceDockerX="50.0" flowable:sourceDockerY="30.0" flowable:targetDockerX="50.0" flowable:targetDockerY="30.0">
+        <omgdi:waypoint x="329.95000000000005" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="342.0" y="75.0"></omgdi:waypoint>
+        <omgdi:waypoint x="342.0" y="72.0"></omgdi:waypoint>
+        <omgdi:waypoint x="379.9999999999877" y="72.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-C261C98F-6FB8-479E-89F9-0E40E0DC33ED" id="BPMNEdge_sid-C261C98F-6FB8-479E-89F9-0E40E0DC33ED" flowable:sourceDockerX="50.0" flowable:sourceDockerY="30.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+        <omgdi:waypoint x="719.9499999999999" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="732.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="732.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="770.0" y="127.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="branchNotHasEnoughHoliday" id="BPMNEdge_branchNotHasEnoughHoliday" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="569.9189252336448" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="582.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="582.0" y="15.0"></omgdi:waypoint>
+        <omgdi:waypoint x="860.0000799465219" y="14.047773790026543"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sid-88D35444-BE2F-4D29-8DE8-17E04871E1C8" id="BPMNEdge_sid-88D35444-BE2F-4D29-8DE8-17E04871E1C8" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="50.0" flowable:targetDockerY="30.0">
+        <omgdi:waypoint x="29.949998618355412" y="76.0"></omgdi:waypoint>
+        <omgdi:waypoint x="80.0" y="76.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="branchRequestApproved" id="BPMNEdge_branchRequestApproved" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="809.9189252336448" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="822.0" y="127.0"></omgdi:waypoint>
+        <omgdi:waypoint x="822.0" y="145.0"></omgdi:waypoint>
+        <omgdi:waypoint x="860.0025321198765" y="144.2682208256902"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="branchHasEnoughHoliday" id="BPMNEdge_branchHasEnoughHoliday" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="50.0" flowable:targetDockerY="30.0">
+        <omgdi:waypoint x="569.9189252336448" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="582.0" y="68.0"></omgdi:waypoint>
+        <omgdi:waypoint x="582.0" y="130.0"></omgdi:waypoint>
+        <omgdi:waypoint x="619.9999999999769" y="130.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
