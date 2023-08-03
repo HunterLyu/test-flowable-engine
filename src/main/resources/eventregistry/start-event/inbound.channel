@@ -1,0 +1,13 @@
+{
+  "key": "testChannel",
+  "category": "channel",
+  "name": "Test channel",
+  "description": "test Inbound Channel",
+  "channelType": "inbound",
+  "type": "kafka",
+  "deserializerType": "json",
+  "channelEventKeyDetection": {
+    "jsonField": "myEvent"
+  },
+  "topics": ["flowable-inbound"]
+}
