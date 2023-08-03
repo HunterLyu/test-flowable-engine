@@ -115,7 +115,7 @@ public class TestController {
 
     @Autowired
     protected RestResponseFactory restResponseFactory;
-    public List<ProcessInstanceResponse>getProcessInstance(){
+    public List<ProcessInstanceResponse>getProcessInstanceRest(){
         List<ProcessInstance> list = runtimeService.createProcessInstanceQuery().list();
         List<ProcessInstanceResponse> processInstanceResponseList = restResponseFactory.createProcessInstanceResponseList(list);
 
