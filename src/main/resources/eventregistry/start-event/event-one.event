@@ -1,0 +1,16 @@
+{
+  "key": "myEvent",
+  "name": "My event",
+
+  "payload": [
+    {
+      "name": "customerName",
+      "type": "string"
+    },
+
+    {
+      "name": "amount",
+      "type": "integer"
+    }
+  ]
+}
