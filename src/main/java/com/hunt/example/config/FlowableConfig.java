@@ -2,9 +2,12 @@ package com.hunt.example.config;
 
 import org.flowable.engine.cfg.HttpClientConfig;
 import org.flowable.engine.impl.cfg.StandaloneProcessEngineConfiguration;
+import org.flowable.spring.boot.process.ProcessEngineRestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
+@Import({ProcessEngineRestConfiguration.class})
 @Configuration
 public class FlowableConfig {
 

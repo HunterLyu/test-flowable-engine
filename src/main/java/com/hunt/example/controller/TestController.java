@@ -13,6 +13,8 @@ import org.flowable.engine.TaskService;
 import org.flowable.engine.repository.Deployment;
 import org.flowable.engine.repository.ProcessDefinition;
 import org.flowable.engine.runtime.ProcessInstance;
+import org.flowable.rest.service.api.RestResponseFactory;
+import org.flowable.rest.service.api.runtime.process.ProcessInstanceResponse;
 import org.flowable.task.api.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -108,6 +111,15 @@ public class TestController {
         long reviewEventCount = reviewEventCounter.getEventCount();
 
         return new DashboardData(caseInstanceCount, processInstanceCount, taskCount, reviewEventCount);
+    }
+
+    @Autowired
+    protected RestResponseFactory restResponseFactory;
+    public List<ProcessInstanceResponse>getProcessInstance(){
+        List<ProcessInstance> list = runtimeService.createProcessInstanceQuery().list();
+        List<ProcessInstanceResponse> processInstanceResponseList = restResponseFactory.createProcessInstanceResponseList(list);
+
+        return processInstanceResponseList;
     }
 
     @GetMapping("/deploy")
