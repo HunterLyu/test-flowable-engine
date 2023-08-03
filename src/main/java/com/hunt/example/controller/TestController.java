@@ -91,7 +91,7 @@ public class TestController {
 
         ProcessInstance pi = runtimeService.startProcessInstanceByKey(processKey, param);
 
-        return "提交成功，流程ID为：" + pi.getProcessInstanceId();
+        return "submit success，processInstanceId：" + pi.getProcessInstanceId();
     }
 
     @RequestMapping(value = "/processDiagram")
