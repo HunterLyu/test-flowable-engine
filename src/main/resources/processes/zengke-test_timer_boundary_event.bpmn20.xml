@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:design="http://flowable.org/design" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://flowable.org/test" design:palette="flowable-work-process-palette">
+  <process id="test-timer-boundary-event" name="test-timer-boundary-event" isExecutable="true" flowable:candidateStarterGroups="flowableUser">
+    <userTask id="firstLineSupport" name="first line support"  flowable:formFieldValidation="false"/>
+    <userTask id="secondLineSupport" name="second line support"  flowable:formFieldValidation="false"/>
+    <startEvent id="startnoneevent1" name="start" flowable:initiator="initiator" flowable:formFieldValidation="false"/>
+    <endEvent id="end1" name="end1"/>
+    <endEvent id="end2" name="end2"/>
+    <boundaryEvent id="bpmnBoundaryEvent_12" name="boundary event" attachedToRef="firstLineSupport" cancelActivity="true">
+      <timerEventDefinition>
+        <timeDuration>PT1M</timeDuration>
+      </timerEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="bpmnSequenceFlow_16" sourceRef="bpmnBoundaryEvent_12" targetRef="secondLineSupport"/>
+    <sequenceFlow id="bpmnSequenceFlow_11" sourceRef="firstLineSupport" targetRef="end1"/>
+    <sequenceFlow id="bpmnSequenceFlow_18" sourceRef="secondLineSupport" targetRef="end2"/>
+    <sequenceFlow id="bpmnSequenceFlow_2" sourceRef="startnoneevent1" targetRef="firstLineSupport"/>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_test-timer-boundary-event">
+    <bpmndi:BPMNPlane bpmnElement="test-timer-boundary-event" id="BPMNPlane_test-timer-boundary-event">
+      <bpmndi:BPMNShape bpmnElement="firstLineSupport" id="BPMNShape_firstLineSupport">
+        <omgdc:Bounds height="60.0" width="100.0" x="80.0" y="120.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="secondLineSupport" id="BPMNShape_secondLineSupport">
+        <omgdc:Bounds height="60.0" width="100.0" x="111.20710678118655" y="270.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="startnoneevent1" id="BPMNShape_startnoneevent1">
+        <omgdc:Bounds height="30.0" width="30.0" x="0.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end1" id="BPMNShape_end1">
+        <omgdc:Bounds height="28.0" width="28.0" x="330.0" y="136.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="end2" id="BPMNShape_end2">
+        <omgdc:Bounds height="28.0" width="28.0" x="330.0" y="286.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="bpmnBoundaryEvent_12" id="BPMNShape_bpmnBoundaryEvent_12">
+        <omgdc:Bounds height="31.0" width="31.0" x="145.70710678118655" y="165.70710678118655"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="bpmnSequenceFlow_11" id="BPMNEdge_bpmnSequenceFlow_11" flowable:sourceDockerX="50.0" flowable:sourceDockerY="30.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="179.9499999999305" y="150.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="150.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="bpmnSequenceFlow_16" id="BPMNEdge_bpmnSequenceFlow_16" flowable:sourceDockerX="15.500000000000002" flowable:sourceDockerY="15.500000000000002" flowable:targetDockerX="50.0" flowable:targetDockerY="30.0">
+        <omgdi:waypoint x="161.20710678118655" y="196.65710544308843"></omgdi:waypoint>
+        <omgdi:waypoint x="161.20710678118655" y="270.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="bpmnSequenceFlow_18" id="BPMNEdge_bpmnSequenceFlow_18" flowable:sourceDockerX="50.0" flowable:sourceDockerY="30.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="211.15710678118654" y="300.0"></omgdi:waypoint>
+        <omgdi:waypoint x="330.0" y="300.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="bpmnSequenceFlow_2" id="BPMNEdge_bpmnSequenceFlow_2" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="50.0" flowable:targetDockerY="30.0">
+        <omgdi:waypoint x="29.949998618355412" y="150.0"></omgdi:waypoint>
+        <omgdi:waypoint x="80.0" y="150.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
