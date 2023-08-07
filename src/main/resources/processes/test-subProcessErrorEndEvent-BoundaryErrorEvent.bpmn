@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" xmlns:design="http://flowable.org/design" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://flowable.org/test" design:palette="flowable-work-process-palette">
+  <process id="subProcessErrorEndEvent" name="sub process  error end event" isExecutable="true" flowable:candidateStarterGroups="flowableUser">
+    <extensionElements>
+      <design:stencilid><![CDATA[BPMNDiagram]]></design:stencilid>
+      <design:creationdate><![CDATA[2023-08-07T08:12:54.103Z]]></design:creationdate>
+      <design:modificationdate><![CDATA[2023-08-07T08:30:28.699Z]]></design:modificationdate>
+    </extensionElements>
+    <subProcess id="bpmnStructure_1" name="Subprocess">
+      <extensionElements>
+        <design:stencilid><![CDATA[ExpandedSubProcess]]></design:stencilid>
+      </extensionElements>
+      <serviceTask id="bpmnTask_9" name="Service task" flowable:delegateExpression="${subProcessSerivceTask}">
+        <extensionElements>
+          <design:stencilid><![CDATA[ServiceTask]]></design:stencilid>
+          <design:stencilsuperid><![CDATA[Task]]></design:stencilsuperid>
+        </extensionElements>
+      </serviceTask>
+      <exclusiveGateway id="bpmnGateway_12">
+        <extensionElements>
+          <design:stencilid><![CDATA[Exclusive_Databased_Gateway]]></design:stencilid>
+        </extensionElements>
+      </exclusiveGateway>
+      <startEvent id="subStart" name="sub start" flowable:initiator="initiator" flowable:formFieldValidation="false">
+        <extensionElements>
+          <flowable:work-form-field-validation><![CDATA[false]]></flowable:work-form-field-validation>
+          <design:stencilid><![CDATA[StartNoneEvent]]></design:stencilid>
+          <design:display_ref_in_diagram><![CDATA[true]]></design:display_ref_in_diagram>
+        </extensionElements>
+      </startEvent>
+      <endEvent id="subFailedEnd" name="sub failed end">
+        <extensionElements>
+          <design:stencilid><![CDATA[EndErrorEvent]]></design:stencilid>
+          <design:display_ref_in_diagram><![CDATA[true]]></design:display_ref_in_diagram>
+        </extensionElements>
+        <errorEventDefinition errorRef="ERR001"></errorEventDefinition>
+      </endEvent>
+      <endEvent id="subSuccessEnd" name="sub success">
+        <extensionElements>
+          <design:stencilid><![CDATA[EndNoneEvent]]></design:stencilid>
+          <design:display_ref_in_diagram><![CDATA[true]]></design:display_ref_in_diagram>
+        </extensionElements>
+      </endEvent>
+      <sequenceFlow id="bpmnSequenceFlow_13" sourceRef="bpmnTask_9" targetRef="bpmnGateway_12">
+        <extensionElements>
+          <design:stencilid><![CDATA[SequenceFlow]]></design:stencilid>
+        </extensionElements>
+      </sequenceFlow>
+      <sequenceFlow id="flag1" name="flag == 1" sourceRef="bpmnGateway_12" targetRef="subSuccessEnd">
+        <extensionElements>
+          <design:stencilid><![CDATA[SequenceFlow]]></design:stencilid>
+          <design:labelrotation><![CDATA[0]]></design:labelrotation>
+          <design:display_ref_in_diagram><![CDATA[true]]></design:display_ref_in_diagram>
+        </extensionElements>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${flag == 1}]]></conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="flag0" name="flag == 0" sourceRef="bpmnGateway_12" targetRef="subFailedEnd">
+        <extensionElements>
+          <design:stencilid><![CDATA[SequenceFlow]]></design:stencilid>
+          <design:labelrotation><![CDATA[0]]></design:labelrotation>
+          <design:display_ref_in_diagram><![CDATA[true]]></design:display_ref_in_diagram>
+        </extensionElements>
+        <conditionExpression xsi:type="tFormalExpression"><![CDATA[${flag == 0}]]></conditionExpression>
+      </sequenceFlow>
+      <sequenceFlow id="bpmnSequenceFlow_18" sourceRef="subStart" targetRef="bpmnTask_9">
+        <extensionElements>
+          <design:stencilid><![CDATA[SequenceFlow]]></design:stencilid>
+        </extensionElements>
+      </sequenceFlow>
+    </subProcess>
+    <startEvent id="start" name="start" flowable:initiator="initiator" flowable:formFieldValidation="false">
+      <extensionElements>
+        <flowable:work-form-field-validation><![CDATA[false]]></flowable:work-form-field-validation>
+        <design:stencilid><![CDATA[StartNoneEvent]]></design:stencilid>
+        <design:display_ref_in_diagram><![CDATA[true]]></design:display_ref_in_diagram>
+      </extensionElements>
+    </startEvent>
+    <endEvent id="successEnd" name="success end">
+      <extensionElements>
+        <design:stencilid><![CDATA[EndNoneEvent]]></design:stencilid>
+        <design:display_ref_in_diagram><![CDATA[true]]></design:display_ref_in_diagram>
+      </extensionElements>
+    </endEvent>
+    <endEvent id="catchErrorEnd" name="catch error end">
+      <extensionElements>
+        <design:stencilid><![CDATA[EndNoneEvent]]></design:stencilid>
+        <design:display_ref_in_diagram><![CDATA[true]]></design:display_ref_in_diagram>
+      </extensionElements>
+    </endEvent>
+    <boundaryEvent id="bpmnBoundaryEvent_5" name="catch boundary event" attachedToRef="bpmnStructure_1">
+      <extensionElements>
+        <design:stencilid><![CDATA[IntermediateErrorEventBoundary]]></design:stencilid>
+        <design:display_ref_in_diagram><![CDATA[true]]></design:display_ref_in_diagram>
+      </extensionElements>
+      <errorEventDefinition errorRef="ERR001"></errorEventDefinition>
+    </boundaryEvent>
+    <sequenceFlow id="bpmnSequenceFlow_7" sourceRef="bpmnBoundaryEvent_5" targetRef="catchErrorEnd">
+      <extensionElements>
+        <design:stencilid><![CDATA[SequenceFlow]]></design:stencilid>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="bpmnSequenceFlow_14" sourceRef="bpmnStructure_1" targetRef="successEnd">
+      <extensionElements>
+        <design:stencilid><![CDATA[SequenceFlow]]></design:stencilid>
+      </extensionElements>
+    </sequenceFlow>
+    <sequenceFlow id="bpmnSequenceFlow_17" sourceRef="start" targetRef="bpmnStructure_1">
+      <extensionElements>
+        <design:stencilid><![CDATA[SequenceFlow]]></design:stencilid>
+      </extensionElements>
+    </sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_subProcessErrorEndEvent">
+    <bpmndi:BPMNPlane bpmnElement="subProcessErrorEndEvent" id="BPMNPlane_subProcessErrorEndEvent">
+      <bpmndi:BPMNShape bpmnElement="bpmnStructure_1" id="BPMNShape_bpmnStructure_1">
+        <omgdc:Bounds height="168.0" width="657.0" x="397.0" y="201.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="bpmnTask_9" id="BPMNShape_bpmnTask_9">
+        <omgdc:Bounds height="54.0" width="89.0" x="537.0" y="233.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="bpmnGateway_12" id="BPMNShape_bpmnGateway_12">
+        <omgdc:Bounds height="40.0" width="40.0" x="750.0" y="240.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="subStart" id="BPMNShape_subStart">
+        <omgdc:Bounds height="30.0" width="30.0" x="431.0" y="245.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="subFailedEnd" id="BPMNShape_subFailedEnd">
+        <omgdc:Bounds height="28.0" width="28.0" x="979.0" y="246.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="subSuccessEnd" id="BPMNShape_subSuccessEnd">
+        <omgdc:Bounds height="28.0" width="28.0" x="756.0" y="322.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="start" id="BPMNShape_start">
+        <omgdc:Bounds height="30.0" width="30.0" x="221.0" y="265.5"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="successEnd" id="BPMNShape_successEnd">
+        <omgdc:Bounds height="28.0" width="28.0" x="1361.0" y="266.5"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="catchErrorEnd" id="BPMNShape_catchErrorEnd">
+        <omgdc:Bounds height="28.0" width="28.0" x="540.0" y="446.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="bpmnBoundaryEvent_5" id="BPMNShape_bpmnBoundaryEvent_5">
+        <omgdc:Bounds height="30.0" width="30.0" x="539.0" y="354.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="bpmnSequenceFlow_13" id="BPMNEdge_bpmnSequenceFlow_13" flowable:sourceDockerX="45.0" flowable:sourceDockerY="27.0" flowable:targetDockerX="20.0" flowable:targetDockerY="20.0">
+        <omgdi:waypoint x="626.0" y="260.0"></omgdi:waypoint>
+        <omgdi:waypoint x="750.0" y="260.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="bpmnSequenceFlow_14" id="BPMNEdge_bpmnSequenceFlow_14" flowable:sourceDockerX="329.0" flowable:sourceDockerY="84.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="1054.0" y="285.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1207.5" y="285.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1207.5" y="280.5"></omgdi:waypoint>
+        <omgdi:waypoint x="1361.0" y="280.5"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="bpmnSequenceFlow_17" id="BPMNEdge_bpmnSequenceFlow_17" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="329.0" flowable:targetDockerY="84.0">
+        <omgdi:waypoint x="251.0" y="280.5"></omgdi:waypoint>
+        <omgdi:waypoint x="324.0" y="280.5"></omgdi:waypoint>
+        <omgdi:waypoint x="324.0" y="285.0"></omgdi:waypoint>
+        <omgdi:waypoint x="397.0" y="285.00000000000006"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="bpmnSequenceFlow_18" id="BPMNEdge_bpmnSequenceFlow_18" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="45.0" flowable:targetDockerY="27.0">
+        <omgdi:waypoint x="461.0" y="260.0"></omgdi:waypoint>
+        <omgdi:waypoint x="537.0" y="260.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flag1" id="BPMNEdge_flag1" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="770.0" y="280.0"></omgdi:waypoint>
+        <omgdi:waypoint x="770.0" y="322.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="flag0" id="BPMNEdge_flag0" flowable:sourceDockerX="20.0" flowable:sourceDockerY="20.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="790.0" y="260.0"></omgdi:waypoint>
+        <omgdi:waypoint x="979.0" y="260.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="bpmnSequenceFlow_7" id="BPMNEdge_bpmnSequenceFlow_7" flowable:sourceDockerX="15.0" flowable:sourceDockerY="15.0" flowable:targetDockerX="14.0" flowable:targetDockerY="14.0">
+        <omgdi:waypoint x="554.0" y="384.0"></omgdi:waypoint>
+        <omgdi:waypoint x="554.0" y="446.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>

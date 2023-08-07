@@ -1,4 +1,4 @@
-package com.hunt.example.servicetask;
+package com.hunt.example.flowable.servicetask;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.flowable.engine.delegate.DelegateExecution;

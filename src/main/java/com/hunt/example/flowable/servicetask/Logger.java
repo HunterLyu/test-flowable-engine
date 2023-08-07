@@ -2,7 +2,7 @@
  * Copyright (c) 2020 nexiles GmbH.  All rights reserved.
  */
 
-package com.hunt.example.servicetask;
+package com.hunt.example.flowable.servicetask;
 
 import lombok.extern.slf4j.Slf4j;
 import org.flowable.engine.delegate.DelegateExecution;
